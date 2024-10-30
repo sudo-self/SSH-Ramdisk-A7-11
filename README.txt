@@ -1,4 +1,4 @@
-echo -e "\e[1;31m                        .8\e[0m"
+echo -e "\e[1;31m      bash create.sh    .8\e[0m"  [idevice] [version] 
 echo -e "\e[1;31m                      .888\e[0m"
 echo -e "\e[1;31m                    .8888'\e[0m"
 echo -e "\e[1;31m                   .8888'\e[0m"
