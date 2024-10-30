@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSH Ramdisk Instructions</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #12a87b;
+        }
+        .command-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1rem 0;
+        }
+        .command-block {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        code {
+            background-color: #1e1e1e;
+            color: #66fcf1;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            flex: 1;
+        }
+        .copy-icon {
+            cursor: pointer;
+            color: #12a87b;
+            font-size: 1.5rem;
+        }
+        .copy-icon:hover {
+            color: #0fcf97;
+        }
+    </style>
+</head>
+<body>
+    <h1>SSH Ramdisk iOS Devices A7-A11</h1>
+    
+    <h2>Creating the ramdisk</h2>
+    <ol>
+        <li>Download and unzip the ramdisk files.</li><br>
+        <li>Open a terminal and drag the ramdisk folder into it.</li><br>
+        <li>Run <code>bash create.sh [devicetype] [version]</code><br><br>
+            <ul>
+                <li>Replace <code>[devicetype]</code> with your device type (like <code>iPhone9,2</code>).</li><br><br>
+                <li>For iOS 12 and above, replace <code>[version]</code> with the installed iOS version.</li><br>
+                <li>For iOS 11 and below, use the device version or <code>12.0</code> if it does not work.</li><br>
+                <li>If you encounter "Failed to download firmware keys" error, update to Big Sur or later.</li><br>
+                <li>A9 devices with the S8003 chip require running with <code>-t</code>: <code>bash create.sh iPhone8,1 14.8 -t</code></li>
+            </ul>
+        </li>
+    </ol>
+
+    <h2>Loading the ramdisk</h2>
+    <ol>
+        <li>Connect your device and enter DFU mode.</li><br>
+        <li>Run <code>bash pwndfu.sh</code> to enter pwned DFU mode (this might take a few tries).</li><br><br>
+        <li>Run <code>bash load.sh [devicetype]</code>.</li><br>
+        <li>Once the ramdisk has loaded and you see the Apple logo with a gray bar, run <code>./resources/tcprelay.py -t 22:2222</code> to start the SSH proxy.
+            <ul><br>
+                <li>If you get an error, download and open Sliver from the appletech752 website and install Python when prompted.</li><br>
+            </ul>
+        </li><br>
+        <li>Open a new terminal window and connect to the device by typing <code>ssh root@localhost -p 2222</code> (password is <code>alpine</code>).</li><br>
+        <li>Once connected, run <code>mount_root</code> to mount the root filesystem on <code>/mnt1</code>.</li><br>
+        <li>Run <code>mount_data</code> to mount the data partition on <code>/mnt2</code>.</li><br>
+    </ol>
+
+
+    <h2>Commands</h2>
+    <div class="command-container">
+        <div class="command-block">
+            <code>bash create.sh [devicetype] [version]</code>
+            <span class="copy-icon" data-command="bash create.sh [devicetype] [version]" onclick="copyToClipboard(this)">📋</span>
+        </div>
+        <div class="command-block">
+            <code>bash pwndfu.sh</code>
+            <span class="copy-icon" data-command="bash pwndfu.sh" onclick="copyToClipboard(this)">📋</span>
+        </div>
+        <div class="command-block">
+            <code>bash load.sh [devicetype]</code>
+            <span class="copy-icon" data-command="bash load.sh [devicetype]" onclick="copyToClipboard(this)">📋</span>
+        </div>
+        <div class="command-block">
+            <code>./resources/tcprelay.py -t 22:2222</code>
+            <span class="copy-icon" data-command="./resources/tcprelay.py -t 22:2222" onclick="copyToClipboard(this)">📋</span>
+        </div>
+        <div class="command-block">
+            <code>ssh root@localhost -p 2222</code>
+            <span class="copy-icon" data-command="ssh root@localhost -p 2222" onclick="copyToClipboard(this)">📋</span>
+        </div>
+        <div class="command-block">
+            <code>mount_root</code>
+            <span class="copy-icon" data-command="mount_root" onclick="copyToClipboard(this)">📋</span>
+        </div>
+        <div class="command-block">
+            <code>mount_data</code>
+            <span class="copy-icon" data-command="mount_data" onclick="copyToClipboard(this)">📋</span>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(element) {
+            const command = element.getAttribute("data-command");
+            navigator.clipboard.writeText(command).then(() => {
+                alert("Copied to clipboard: " + command);
+            }, (err) => {
+                console.error('Error copying text: ', err);
+            });
+        }
+    </script>
+</body>
+</html>
