@@ -23,3 +23,13 @@ echo -e "\e[1;34m     \`###########################'\e[0m"
 echo -e "\e[1;34m       \`#######################'\e[0m"
 echo -e "\e[1;34m         \`#########''########'\e[0m"
 echo -e "\e[1;34m           \`\"\"\"\"\"\"'  \`\"\"\"\"\"'\e[0m"
+
+bash create.sh [devicetypel [version]
+
+bash pwndfu.sh
+
+bash load sh devicetypel
+
+/ resources/tcprelay.py -t 22:2222
+
+ssh root@localhost -p 2222
